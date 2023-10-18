@@ -37,7 +37,16 @@ async function run() {
    app.get('/products',async(req,res)=>{
      const query= await database.find().toArray();
      res.send(query)
-   })         
+   })      
+   
+//     find only brand related products
+
+app.get('/products/:id',async(req,res)=>{
+    const id=(req.params.id)
+    console.log(id);
+    const result = await database.find({brand: id}).toArray()
+    res.send(result)
+})
 
     //    insert product from admin page
 
