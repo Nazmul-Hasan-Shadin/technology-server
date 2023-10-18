@@ -30,7 +30,14 @@ async function run() {
   try {
   
     await client.connect();
+                // product database
   const database= client.db('BrandProducts').collection('prouct')
+
+                //    cart Database
+
+     const cartDatabas= client.db('CartDatabase').collection('carts')       
+     
+                // cart database end
 
             // get all product
 
@@ -91,6 +98,26 @@ app.put('/update/:id',async(req,res)=>{
     
   
 })
+
+
+                //   cart database workflow
+
+
+app.get('/carts',async(req,res)=>{
+  const query= await cartDatabas.find().toArray()
+   res.send(query)
+})            
+
+   app.post('/carts',async(req,res)=>{
+     const cartData= req.body;
+     console.log(req.body);
+     const result= await cartDatabas.insertOne(cartData)
+   
+     res.send(result)
+
+   })
+
+
    
 
 
