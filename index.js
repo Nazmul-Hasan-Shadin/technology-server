@@ -117,6 +117,14 @@ app.get('/carts',async(req,res)=>{
 
    })
 
+   app.delete('/delete/:id',async(req,res)=>{
+    const id= req.params.id
+
+    const filter ={_id:id}
+    const result= await cartDatabas.deleteOne(filter)
+    res.send(result)
+   })
+
 
    
 
