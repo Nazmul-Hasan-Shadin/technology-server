@@ -1,6 +1,7 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const express = require('express');
 const app= express();
+const port=process.env.PORT || 5000;
 
 const cors= require('cors')
 
@@ -27,9 +28,26 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
+  
     await client.connect();
+  const database= client.db('BrandProducts').collection('prouct')
 
+            // get all product
+
+   app.get('/products',async(req,res)=>{
+     const query= await database.find().toArray();
+     res.send(query)
+   })         
+
+    //    insert product from admin page
+
+   app.post('/products',async(req,res)=>{
+     const data= req.body;
+     console.log(data);
+     const result=await database.insertOne(data)
+     res.send(result)
+
+   })            
    
 
 
@@ -40,5 +58,9 @@ async function run() {
     // Ensures that the client will close when you finish/error
     // await client.close();
   }
+
+  app.listen(port,()=>{
+    console.log("server is running");
+  })
 }
 run().catch(console.dir);
